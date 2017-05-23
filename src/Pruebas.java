@@ -9,7 +9,5 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Pruebas {
     public static void main(String[] args) {
-
-        }
     }
 }
