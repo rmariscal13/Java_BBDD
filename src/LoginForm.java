@@ -44,10 +44,17 @@ public class LoginForm {
             public void actionPerformed(ActionEvent e) {
                 userValue = user.getText();
                 passwordValue = String.valueOf(password.getPassword());
-                if (Main.database.userAutorized(userValue, passwordValue)) {
-                    // OK
-                } else {
-                    // Password no correcte
+                try {
+                    if (Main.database.userAutorized(userValue, passwordValue)) {
+                        // OK
+                        System.out.println("correcte");
+                        
+                    } else {
+                        // Password no correcte
+                        System.out.println("incorrecte");
+                    }
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
                 }
 
             }

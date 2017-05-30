@@ -2,16 +2,17 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.*;
+import java.awt.*;
 import java.io.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created by rmariscal on 25/05/17.
  */
 
 public class DataBase {
+    Connection conn;
+
     DataBase() throws ParserConfigurationException, IOException, SAXException, SQLException {
         // Llegir fitxer xml i connectar-se a la base de dades
 
@@ -35,12 +36,30 @@ public class DataBase {
         passBBDD = eElement.getElementsByTagName("password").item(0).getTextContent();
         port = eElement.getElementsByTagName("port").item(0).getTextContent();
 
-        Connection conexion = DriverManager.getConnection ("jdbc:mysql://" + serverIP + "/",userBBDD, passBBDD);
+        Connection conexion = DriverManager.getConnection ("jdbc:mysql://" + serverIP + ":" + port + "/",userBBDD, passBBDD);
+        this.conn = conexion;
+
+
+
 
     }
 
-    boolean userAutorized(String username, String password) {
+    boolean userAutorized(String userValue, String passwordValue) throws SQLException {
         // Consultar a la base de dades si existeix aquest usuari
-        return true;
+        Connection conn = this.conn;
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM practica7.SOCI;\n");
+
+        while (rs.next()) {
+            String user = rs.getString("Usuari");
+            if (user.equals(userValue)) {
+                String password = rs.getString("Contrasenya");
+                if (password.equals(passwordValue)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
     }
 }
