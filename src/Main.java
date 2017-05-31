@@ -1,6 +1,7 @@
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
@@ -12,10 +13,11 @@ import java.sql.SQLException;
  */
 public class Main {
     static DataBase database;
+    static JFrame frame;
 
     static {
         try {
-            database = new DataBase();
+            database = new DataBase() ;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -28,20 +30,26 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        LoginForm mf = new LoginForm();
-        Prueba p = new Prueba();
+        LoginForm lf = new LoginForm();
+        Desktop dt = new Desktop();
 
-        JFrame frame = new JFrame();
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-//        panel.add(mf.getPanel(), "LOGINPANEL");
-//        panel.add(p.getPanel(), "PRUEBA");
+        frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(mf.getPanel());
         frame.setSize(500, 500);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new CardLayout());
+        panel.add(lf.getPanel(), "LOGINPANEL");
+        panel.add(dt.getPanel(), "DESKTOP");
+
+        frame.setContentPane(panel);
         frame.setVisible(true);
 
+    }
 
-
+    public static void changeScreen(String screenName) {
+        JPanel panel = (JPanel) frame.getContentPane();
+        CardLayout cl = (CardLayout) panel.getLayout();
+        cl.show(panel, screenName);
     }
 }

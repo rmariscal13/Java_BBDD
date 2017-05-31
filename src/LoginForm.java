@@ -46,9 +46,9 @@ public class LoginForm {
                 passwordValue = String.valueOf(password.getPassword());
                 try {
                     if (Main.database.userAutorized(userValue, passwordValue)) {
-                        // OK
-                        System.out.println("correcte");
-                        
+                        //OK
+                        Main.changeScreen("DESKTOP");
+
                     } else {
                         // Password no correcte
                         System.out.println("incorrecte");
@@ -59,9 +59,6 @@ public class LoginForm {
 
             }
         });
-    }
-
-    private void connection() throws SQLException {
     }
 
 }

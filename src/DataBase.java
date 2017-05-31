@@ -14,13 +14,12 @@ public class DataBase {
     Connection conn;
 
     DataBase() throws ParserConfigurationException, IOException, SAXException, SQLException {
-        // Llegir fitxer xml i connectar-se a la base de dades
-
         String serverIP;
         String userBBDD;
         String passBBDD;
         String port;
 
+        //Llegeix fitxer xml
         File inputFile = new File("/home/rmariscal/Documentos/CFGS/Programacio/06-01-17 Practica 7/configuracio.xml");
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -36,6 +35,7 @@ public class DataBase {
         passBBDD = eElement.getElementsByTagName("password").item(0).getTextContent();
         port = eElement.getElementsByTagName("port").item(0).getTextContent();
 
+        //Realitza connexió
         Connection conexion = DriverManager.getConnection ("jdbc:mysql://" + serverIP + ":" + port + "/",userBBDD, passBBDD);
         this.conn = conexion;
 
@@ -58,7 +58,6 @@ public class DataBase {
                     return true;
                 }
             }
-            return false;
         }
         return false;
     }
