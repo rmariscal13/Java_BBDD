@@ -44,6 +44,8 @@ public class LoginForm {
             public void actionPerformed(ActionEvent e) {
                 userValue = user.getText();
                 passwordValue = String.valueOf(password.getPassword());
+                Main.changeScreen("DESKTOP");
+
                 try {
                     if (Main.database.userAutorized(userValue, passwordValue)) {
                         //OK

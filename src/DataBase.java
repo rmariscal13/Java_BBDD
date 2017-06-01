@@ -47,8 +47,8 @@ public class DataBase {
     boolean userAutorized(String userValue, String passwordValue) throws SQLException {
         // Consultar a la base de dades si existeix aquest usuari
         Connection conn = this.conn;
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM practica7.SOCI;\n");
+        Statement cercaUsuariStmt = conn.createStatement();
+        ResultSet rs = cercaUsuariStmt.executeQuery("select * from practica7.BIBLIOTECARI;\n");
 
         while (rs.next()) {
             String user = rs.getString("Usuari");
@@ -60,5 +60,12 @@ public class DataBase {
             }
         }
         return false;
+    }
+
+    void afegeixSoci(String DNI, String nom, String llinatge1, String llinatge2, String dataNaixement) throws SQLException {
+        Connection conn = this.conn;
+        Statement afegeixUsuariStmt = conn.createStatement();
+        String sql = "insert into practica7.SOCI values ('" + DNI + "','" + nom + "','" + llinatge1 + "','" + llinatge2 + "','" + dataNaixement + "')";
+        afegeixUsuariStmt.executeUpdate(sql);
     }
 }
