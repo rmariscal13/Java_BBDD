@@ -1,7 +1,6 @@
 import org.xml.sax.SAXException;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,10 +30,11 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         LoginForm lf = new LoginForm();
         Desktop dt = new Desktop();
         LectorAlta la = new LectorAlta();
+        NouPrestec np = new NouPrestec();
 
 
         //Crea frame
@@ -45,6 +45,7 @@ public class Main {
         //Crea panel i afegim tots els formularis
         JPanel panel = new JPanel();
         panel.setLayout(new CardLayout());
+        panel.add(np.getPanel(), "NOUPRESTEC");
         panel.add(lf.getPanel(), "LOGINPANEL");
         panel.add(dt.getPanel(), "DESKTOP");
         panel.add(la.getPanel(), "LECTORALTA");
@@ -88,7 +89,12 @@ public class Main {
             }
         });
 
-        
+        lectorBaixa.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeScreen("LECTORBAIXA");
+            }
+        });
 
         JMenuItem llibreAfegeix = new JMenuItem("Afegeix");
         JMenuItem llibreElimina = new JMenuItem("Elimina");
