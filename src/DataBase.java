@@ -72,6 +72,24 @@ public class DataBase {
         afegeixUsuariStmt.executeUpdate(soci);
     }
 
+    void afegeixAutor(String nacionalitat, String alies, String nom, String llinatge1, String llinatge2, String dataNaixement) throws SQLException {
+        Connection conn = this.conn;
+        Statement afegeixAutorStmt = conn.createStatement();
+        String persona = "insert into practica7.PERSONA values (DEFAULT, '" + nom + "','" + llinatge1 + "','" + llinatge2 + "','" + dataNaixement + "')";
+        String autor = "insert into practica7.AUTOR values (LAST_INSERT_ID(), '" + nacionalitat + "',' " + alies + "')";
+        afegeixAutorStmt.executeUpdate(persona);
+        afegeixAutorStmt.executeUpdate(autor);
+    }
+
+    void afegeixLlibre(int ISBN, String titol, String portada, int numPag, String editorial, int autor) throws SQLException {
+        Connection conn = this.conn;
+        Statement afegeixLlibreStmt = conn.createStatement();
+        String llibre = "insert into practica7.LLIBRE values (DEFAULT, " + ISBN + ",'" + titol + "','" + portada + "'," + numPag + ",'" + editorial + "'," + autor + ")";
+        String copia = "insert into practica7.COPIA values (last_insert_id(), NULL)";
+        afegeixLlibreStmt.executeUpdate(llibre);
+        afegeixLlibreStmt.executeUpdate(copia);
+    }
+
     void afefeixPrestec(int ID_Bibliotecari, int ID_Soci, int ID_Copia) throws SQLException {
         Connection conn = this.conn;
         Statement afegeixPrestecStmt = conn.createStatement();
@@ -202,12 +220,12 @@ public class DataBase {
         }
         rs.close();
 
-        String autor = "select * from practica7.AUTOR where ID = " + dadesLlibre[5] + ";";
-        ResultSet rs2 = rebSociStmt.executeQuery(autor);
-        while(rs2.next()){
-            dadesLlibre[5] = rs2.getString("Alies");
-        }
-        rs2.close();
+//        String autor = "select * from practica7.AUTOR where ID = " + dadesLlibre[5] + ";";
+//        ResultSet rs2 = rebSociStmt.executeQuery(autor);
+//        while(rs2.next()){
+//            dadesLlibre[5] = rs2.getString("Alies");
+//        }
+//        rs2.close();
 
         return dadesLlibre;
     }
@@ -236,6 +254,60 @@ public class DataBase {
         int[] ID = new int[IDLlibres.size()];
         for (int i = 0; i < ID.length; i++) {
             ID[i] = IDLlibres.poll();
+        }
+        return ID;
+    }
+
+    String[] rebAutor(int ID) throws SQLException {
+        String[] dadesAutor = new String[6];
+
+        Connection conn = this.conn;
+        Statement rebAutorStmt = conn.createStatement();
+        String persona = "select * from practica7.PERSONA where ID = " + ID + ";";
+        ResultSet rs = rebAutorStmt.executeQuery(persona);
+        while(rs.next()){
+            dadesAutor[0] = rs.getString("Nom");
+            dadesAutor[1] = rs.getString("Llinatge1");
+            dadesAutor[2] = rs.getString("Llinatge2");
+            dadesAutor[3] = rs.getString("Data_Naixement");
+        }
+        rs.close();
+
+        String autor = "select * from practica7.SOCI where ID = " + ID + ";";
+        ResultSet rs2 = rebAutorStmt.executeQuery(autor);
+        while(rs2.next()){
+            dadesAutor[4] = rs2.getString("Nacionalitat");
+            dadesAutor[5] = rs2.getString("Alies");
+        }
+        rs2.close();
+
+        return dadesAutor;
+    }
+
+    int[] IDDeAutors(String llinatge) throws SQLException {
+        LinkedList<Integer> IDAutors = new LinkedList<>();
+
+        Connection conn = this.conn;
+        Statement autorsStmt = conn.createStatement();
+        String autors = "select * from practica7.AUTOR, practica7.PERSONA WHERE practica7.AUTOR.ID = practica7.PERSONA.ID AND practica7.PERSONA.Llinatge1 LIKE '%" + llinatge + "%';";
+
+        boolean results = autorsStmt.execute(autors);
+        int rsCount = 0;
+
+        while (results) {
+            ResultSet rs = autorsStmt.getResultSet();
+            while (rs.next()) {
+                IDAutors.add(rs.getInt("ID"));
+            }
+            rs.close();
+
+            results = autorsStmt.getMoreResults();
+        }
+        autorsStmt.close();
+
+        int[] ID = new int[IDAutors.size()];
+        for (int i = 0; i < ID.length; i++) {
+            ID[i] = IDAutors.poll();
         }
         return ID;
     }

@@ -58,7 +58,6 @@ public class NouPrestec {
             public void actionPerformed(ActionEvent e) {
                 int row = sociTable.getSelectedRow();
                 int col = sociTable.getSelectedColumn();
-                System.out.println("Selected row " + row);
 
                 String tipusCerca = sociLlibre.getSelection().getActionCommand();
                 String cerca = cercaSociLlibreField.getText();
@@ -182,6 +181,8 @@ public class NouPrestec {
                         @Override
                         public Object getValueAt(int i, int i1) {
                             Llibre l = llistaLlibres.get(i);
+
+
                             switch(i1) {
                                 case 0:
                                     return l.getID();
@@ -190,28 +191,37 @@ public class NouPrestec {
                                 case 2:
                                     return l.getTitol();
                                 case 3:
-                                    return l.getPortada();
-                                case 4:
-                                    return l.getNumPagines();
-                                case 5:
-                                    return l.getEditorial();
-                                case 6:
                                     return l.getAutor();
+                                case 4:
+                                    return l.getEditorial();
                             }
                             throw new RuntimeException("Impossible");
+
+
                         }
                     };
                     llibreTable.setModel(modelTaula);
                 }
 
+            }
+        });
 
 
+        afegeixButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Bibliotecari bibliotecariSeleccionat = (Bibliotecari)comboBox1.getSelectedItem();
+
+                int IDLlibreSeleccionat = (int)llibreTable.getValueAt(llibreTable.getSelectedRow(), 0);
+                int IDSociSeleccionat = (int)sociTable.getValueAt(sociTable.getSelectedRow(), 0);
+                int IDBibliotecariSeleccionat = bibliotecariSeleccionat.getID();
 
 
-
-
-
-
+                try {
+                    Main.database.afefeixPrestec(IDBibliotecariSeleccionat, IDSociSeleccionat, IDLlibreSeleccionat);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
 
             }
         });
@@ -221,5 +231,9 @@ public class NouPrestec {
 
 
 
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

@@ -15,6 +15,7 @@ import java.sql.SQLException;
 public class Main {
     static DataBase database;
     static JFrame frame;
+    static JMenuBar jmb;
 
     static {
         try {
@@ -35,6 +36,8 @@ public class Main {
         Desktop dt = new Desktop();
         LectorAlta la = new LectorAlta();
         NouPrestec np = new NouPrestec();
+        NouAutor nouAutor = new NouAutor();
+        NouLlibre nouLlibre = new NouLlibre();
 
 
         //Crea frame
@@ -42,13 +45,16 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500, 500);
 
+
         //Crea panel i afegim tots els formularis
         JPanel panel = new JPanel();
         panel.setLayout(new CardLayout());
-        panel.add(np.getPanel(), "NOUPRESTEC");
         panel.add(lf.getPanel(), "LOGINPANEL");
         panel.add(dt.getPanel(), "DESKTOP");
         panel.add(la.getPanel(), "LECTORALTA");
+        panel.add(np.getPanel(), "NOUPRESTEC");
+        panel.add(nouAutor.getPanel(), "NOUAUTOR");
+        panel.add(nouLlibre.getPanel(), "NOULLIBRE");
 
         //Establim un panel
         frame.setContentPane(panel);
@@ -96,6 +102,7 @@ public class Main {
             }
         });
 
+
         JMenuItem llibreAfegeix = new JMenuItem("Afegeix");
         JMenuItem llibreElimina = new JMenuItem("Elimina");
         JMenuItem llibreModificacio = new JMenuItem("Modifica");
@@ -103,12 +110,27 @@ public class Main {
         llibre.add(llibreElimina);
         llibre.add(llibreModificacio);
 
+        llibreAfegeix.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeScreen("NOULLIBRE");
+            }
+        });
+
         JMenuItem autorAfegeix = new JMenuItem("Afegeix");
         JMenuItem autorElimina = new JMenuItem("Elimina");
         JMenuItem autorModifica = new JMenuItem("Modifica");
         autor.add(autorAfegeix);
         autor.add(autorElimina);
         autor.add(autorModifica);
+
+        autorAfegeix.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeScreen("NOUAUTOR");
+            }
+        });
+
 
         JMenuItem sancioAfegeix = new JMenuItem("Afegeix");
         JMenuItem sancioElimina = new JMenuItem("Elimina");
@@ -124,9 +146,13 @@ public class Main {
         prestec.add(prestecElimina);
         prestec.add(prestecModifica);
 
-
-
-        jmb.setVisible(true);
+        prestecAfegeix.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeScreen("NOUPRESTEC");
+            }
+        });
+        
     }
 
     public static void changeScreen(String screenName) {

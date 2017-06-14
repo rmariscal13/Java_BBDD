@@ -11,6 +11,54 @@ public class Bibliotecari {
     String dataNaixement;
     String DNI;
 
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getLlinatge1() {
+        return llinatge1;
+    }
+
+    public void setLlinatge1(String llinatge1) {
+        this.llinatge1 = llinatge1;
+    }
+
+    public String getLlinatge2() {
+        return llinatge2;
+    }
+
+    public void setLlinatge2(String llinatge2) {
+        this.llinatge2 = llinatge2;
+    }
+
+    public String getDataNaixement() {
+        return dataNaixement;
+    }
+
+    public void setDataNaixement(String dataNaixement) {
+        this.dataNaixement = dataNaixement;
+    }
+
+    public String getDNI() {
+        return DNI;
+    }
+
+    public void setDNI(String DNI) {
+        this.DNI = DNI;
+    }
+
 
     Bibliotecari(int ID) throws SQLException {
         String[] dades = Main.database.rebBibliotecari(ID);

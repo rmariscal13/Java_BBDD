@@ -10,7 +10,7 @@ public class Llibre {
     private String portada;
     private int numPagines;
     private String editorial;
-    private String autor;
+    private int autor;
 
     public int getID() {
         return ID;
@@ -60,11 +60,11 @@ public class Llibre {
         this.editorial = editorial;
     }
 
-    public String getAutor() {
+    public int getAutor() {
         return autor;
     }
 
-    public void setAutor(String autor) {
+    public void setAutor(int autor) {
         this.autor = autor;
     }
 
@@ -76,6 +76,6 @@ public class Llibre {
         this.portada = dades[2];
         this.numPagines = Integer.parseInt(dades[3]);
         this.editorial = dades[4];
-        this.autor = dades[5];
+        this.autor = Integer.parseInt(dades[5]);
     }
 }
